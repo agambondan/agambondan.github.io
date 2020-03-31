@@ -20,8 +20,8 @@ class App extends React.Component {
                             </div>
                         </div>
                         <Switch>
-                            <Route path={"/"}><Introduction/></Route>
-                            {/*<Route path={"/portfolio"}><Introduction/></Route>*/}
+                            <Route exact path={""}><Introduction/></Route>
+                            <Route path={"/introduction"}><Introduction/></Route>
                             <Route path={"/skill"}><Skill/></Route>
                             <Route path={"/about"}><About/></Route>
                             <Route path={"/hobbies"}><Hobbies/></Route>
@@ -39,3 +39,5 @@ class App extends React.Component {
 }
 
 export default App;
+
+//  "homepage": "https://agambondan.github.io/portfolio",

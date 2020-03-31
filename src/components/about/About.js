@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import Navbar from "../layout/Navbar";
 
 class About extends Component {
     render() {
         return (
-            <div>
-                
-            </div>
+            <>
+             <Navbar/>
+            </>
         );
     }
 }

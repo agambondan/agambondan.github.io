@@ -4,11 +4,6 @@ class Skill extends Component {
     render() {
         return (
             <>
-                <table>
-                    <tr>
-                        <td>name</td>
-                    </tr>
-                </table>
             </>
         );
     }
