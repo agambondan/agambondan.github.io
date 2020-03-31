@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class NavHobbies extends Component {
+class Hobbies extends Component {
     render() {
         return (
             <>
@@ -10,4 +10,4 @@ class NavHobbies extends Component {
     }
 }
 
-export default NavHobbies;
+export default Hobbies;

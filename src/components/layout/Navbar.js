@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 class Navbar extends Component {
     render() {
-        const img = require("../images/Portfolio.png");
+        const img = require("../../images/Portfolio.png");
         return (
             <nav className="navbar navbar-expand-lg navbar-dark blue-grey">
                 <Link to="" className="navbar-brand">
@@ -20,13 +20,13 @@ class Navbar extends Component {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="about" className="nav-link">ABOUT</Link>
+                            <Link to="/skill" className="nav-link">SKILL</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="skill" className="nav-link">SKILL</Link>
+                            <Link to="/hobbies" className="nav-link">HOBBIES</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="hobbies" className="nav-link">HOBBIES</Link>
+                            <Link to="/about" className="nav-link">ABOUT</Link>
                         </li>
                     </ul>
                 </div>
