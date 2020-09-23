@@ -10,12 +10,12 @@ import Hobbies from "./Hobbies";
 
 class Introduction extends Component {
     render() {
+        const pp = require("../../images/pp.jpg")
         return (
             <>
                 <div className="row mt-5 mb-5 background-container">
                     <div className="col-md-4 pl-md-4">
-                        <img className="img-fluid circular--portrait z-depth-3"
-                             src="https://scontent-cgk1-1.xx.fbcdn.net/v/t1.0-9/12042662_1502011750112370_376280996792218662_n.jpg?_nc_cat=100&_nc_sid=e007fa&_nc_eui2=AeFbmJXxemTqE7J6ooFamyVa7Gkld1E54quovJQNh2QUlsZC2uFtUWZDq5L4eRIinuaYN2kiQYleYB5zjD0e__uxMEQgtB-6TZ5rtJCg8m3bzA&_nc_ohc=R6eZwvcV8ywAX_3naDy&_nc_ht=scontent-cgk1-1.xx&oh=a7bf32f915368f19f37db0fdee228697&oe=5EA48A1D"
+                        <img className="img-fluid circular--portrait z-depth-3" src={pp}
                              alt="img"/>
                     </div>
                     <div className="col-md-8">
