@@ -1,0 +1,113 @@
+name: QA Automation
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa-web:
+    name: QA Web
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate CV data
+        run: npm run validate:cv
+
+      - name: Run web QA
+        run: npm run qa:web
+
+      - name: Upload web Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-playwright-report
+          retention-days: 7
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          if-no-files-found: ignore
+
+      - name: Upload web Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-lighthouse-report
+          retention-days: 7
+          path: apps/web/.lighthouseci
+          if-no-files-found: ignore
+
+  qa-mobile:
+    name: QA Mobile
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run mobile QA
+        run: npm run qa:mobile
+
+      - name: Capacitor sync sanity
+        run: npm run cap:sync
+
+      - name: Upload mobile Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-playwright-report
+          retention-days: 7
+          path: |
+            apps/mobile/playwright-report
+            apps/mobile/test-results
+          if-no-files-found: ignore
+
+  qa-reports:
+    name: QA Reports Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [qa-web, qa-mobile]
+    if: always()
+    steps:
+      - name: QA Summary
+        run: |
+          echo "QA web status: ${{ needs.qa-web.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "QA mobile status: ${{ needs.qa-mobile.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "Artifacts available in workflow run page." >> $GITHUB_STEP_SUMMARY
