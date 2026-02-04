@@ -75,7 +75,7 @@ export function MarkdownContent({ content, locale }: MarkdownContentProps) {
       components={{
         pre({ children }) {
           const child = Array.isArray(children) ? children[0] : children;
-          if (!React.isValidElement(child)) {
+          if (!React.isValidElement<{ className?: string; children?: React.ReactNode }>(child)) {
             return <pre>{children}</pre>;
           }
 
