@@ -1,5 +1,6 @@
 "use client";
 
+import { LocaleToggle } from "@/components/locale-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { localeFromPathname, localeHref } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ const labels = {
         themeLight: "Light",
         switchToLight: "Switch to light theme",
         switchToDark: "Switch to dark theme",
+        switchLanguage: "Switch language",
     },
     id: {
         brandAccent: "Agam",
@@ -38,6 +40,7 @@ const labels = {
         themeLight: "Terang",
         switchToLight: "Ubah ke tema terang",
         switchToDark: "Ubah ke tema gelap",
+        switchLanguage: "Ganti bahasa",
     },
 } as const;
 
@@ -110,30 +113,18 @@ export function SiteHeader() {
                             {link.label}
                         </Link>
                     ))}
-                    <div className='header-segment ml-2 flex items-center gap-1 rounded-full p-1 text-xs'>
-                        <Link
-                            className={cn(
-                                "header-locale-link rounded-full px-2 py-1",
-                                locale === "en"
-                                    ? "header-locale-link-active"
-                                    : "header-locale-link-idle",
-                            )}
-                            href={currentPathWithLocale("en")}
-                        >
-                            EN
-                        </Link>
-                        <Link
-                            className={cn(
-                                "header-locale-link rounded-full px-2 py-1",
-                                locale === "id"
-                                    ? "header-locale-link-active"
-                                    : "header-locale-link-idle",
-                            )}
-                            href={currentPathWithLocale("id")}
-                        >
-                            ID
-                        </Link>
-                    </div>
+                    <LocaleToggle
+                        enHref={currentPathWithLocale("en")}
+                        idHref={currentPathWithLocale("id")}
+                        labels={{
+                            enShort: "EN",
+                            idShort: "ID",
+                            english: t.english,
+                            indonesia: t.indonesia,
+                            switchLanguage: t.switchLanguage,
+                        }}
+                        locale={locale}
+                    />
                     <ThemeToggle
                         labels={{
                             dark: t.themeDark,
@@ -188,32 +179,20 @@ export function SiteHeader() {
                                 {link.label}
                             </Link>
                         ))}
-                        <div className='mt-1 flex items-center gap-2'>
-                            <Link
-                                className={cn(
-                                    "header-mobile-locale-link rounded-md px-3 py-2 text-xs",
-                                    locale === "en"
-                                        ? "header-mobile-locale-link-active"
-                                        : "header-mobile-locale-link-idle",
-                                )}
-                                href={currentPathWithLocale("en")}
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {t.english}
-                            </Link>
-                            <Link
-                                className={cn(
-                                    "header-mobile-locale-link rounded-md px-3 py-2 text-xs",
-                                    locale === "id"
-                                        ? "header-mobile-locale-link-active"
-                                        : "header-mobile-locale-link-idle",
-                                )}
-                                href={currentPathWithLocale("id")}
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {t.indonesia}
-                            </Link>
-                        </div>
+                        <LocaleToggle
+                            enHref={currentPathWithLocale("en")}
+                            idHref={currentPathWithLocale("id")}
+                            labels={{
+                                enShort: "EN",
+                                idShort: "ID",
+                                english: t.english,
+                                indonesia: t.indonesia,
+                                switchLanguage: t.switchLanguage,
+                            }}
+                            locale={locale}
+                            mobile
+                            onSelect={() => setIsOpen(false)}
+                        />
                         <div className='mt-1'>
                             <ThemeToggle
                                 labels={{

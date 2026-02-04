@@ -7,6 +7,14 @@ async function expectGlobalNavbar(page: import("@playwright/test").Page) {
   await expect(nav.getByRole("link", { name: "Blog", exact: true })).toBeVisible();
 }
 
+async function expectLocalePill(page: import("@playwright/test").Page, active: "EN" | "ID") {
+  const pill = page.locator("nav[aria-label='Primary'] .locale-toggle").first();
+  await expect(pill).toBeVisible();
+  await expect(pill.getByRole("link", { name: "EN", exact: true })).toBeVisible();
+  await expect(pill.getByRole("link", { name: "ID", exact: true })).toBeVisible();
+  await expect(pill.getByRole("link", { name: active, exact: true })).toHaveAttribute("aria-current", "page");
+}
+
 test("renders modern profile homepage", async ({ page }) => {
   await page.goto("/");
   await expectGlobalNavbar(page);
@@ -24,6 +32,7 @@ test("renders modern profile homepage", async ({ page }) => {
 test("keeps locale switch on cv route", async ({ page }) => {
   await page.goto("/cv");
   await expectGlobalNavbar(page);
+  await expectLocalePill(page, "EN");
   await expect(page.getByRole("dialog", { name: "Choose CV Version" })).toBeVisible();
   await page.getByRole("button", { name: "Open New CV" }).click();
   await page.getByRole("button", { name: "Switch to Indonesian" }).click();
@@ -50,6 +59,7 @@ test("opens cv and blog routes", async ({ page }) => {
 test("keeps blog locale equivalence when switching language", async ({ page }) => {
   await page.goto("/blog");
   await expect(page.getByRole("heading", { name: "Blog" })).toBeVisible();
+  await expectLocalePill(page, "EN");
   await expect(page.getByRole("button", { name: "Load more" })).toBeVisible();
   await page.getByRole("button", { name: "Load more" }).click();
   await expect(page.getByText("Showing 12 of 22 articles")).toBeVisible();
@@ -62,18 +72,30 @@ test("keeps blog locale equivalence when switching language", async ({ page }) =
   await page.getByLabel("Sort by").selectOption("title-asc");
   await expect(page).toHaveURL(/tags=/);
   await expect(page).toHaveURL(/sort=title-asc/);
-  await page.getByRole("link", { name: "ID", exact: true }).click();
+  const localePill = page.locator("nav[aria-label='Primary'] .locale-toggle").first();
+  await localePill.getByRole("link", { name: "ID", exact: true }).click();
   await expect(page).toHaveURL(/\/id\/blog\/?$/);
+  await expectLocalePill(page, "ID");
   await page.getByRole("searchbox", { name: "Blog search input" }).fill("adapter");
   await expect(page).toHaveURL(/\/id\/blog\/?\?q=adapter/);
   await expect(page.getByRole("link", { name: "Baca artikel →" }).first()).toBeVisible();
 
-  await page.getByRole("link", { name: "Baca artikel →" }).first().click();
-  await expect(page).toHaveURL(/\/id\/blog\/[^/]+\/?$/);
-  await expect(page.locator(".blog-detail-thumbnail")).toBeVisible();
+  const firstReadLink = page.getByRole("link", { name: "Baca artikel →" }).first();
+  const detailHref = await firstReadLink.getAttribute("href");
+  expect(detailHref).toBeTruthy();
+  await Promise.all([
+    page.waitForURL((url) => new URL(url).pathname === detailHref),
+    firstReadLink.click(),
+  ]);
+  await expect
+    .poll(() => new URL(page.url()).pathname)
+    .toMatch(/^\/id\/blog\/[^/]+\/?$/);
+  await expect(page.locator("main article.markdown-body")).toBeVisible();
+  await expect(page.locator("main .blog-detail-thumbnail")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salin blok kode" }).first()).toBeVisible();
   await expect(page.locator("article.markdown-body pre code").first()).toBeVisible();
 
-  await page.getByRole("link", { name: "EN", exact: true }).click();
+  await page.locator("nav[aria-label='Primary'] .locale-toggle").first().getByRole("link", { name: "EN", exact: true }).click();
   await expect(page).toHaveURL(/\/blog\/[^/]+\/?$/);
+  await expectLocalePill(page, "EN");
 });

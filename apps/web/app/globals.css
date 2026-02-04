@@ -209,6 +209,56 @@ body {
   background: var(--header-pill-bg);
 }
 
+.locale-toggle {
+  display: inline-flex;
+  align-items: center;
+}
+
+.locale-toggle-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  border-radius: 9999px;
+  background: var(--header-pill-bg);
+  padding: 0.25rem;
+}
+
+.locale-toggle-option {
+  border-radius: 9999px;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--header-text);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.locale-toggle-option:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--header-accent) 62%, white 18%);
+  outline-offset: 1px;
+}
+
+.locale-toggle-option-active {
+  background: var(--header-pill-active-bg);
+  color: var(--header-text-strong);
+}
+
+.locale-toggle-option-idle:hover {
+  background: var(--header-link-bg-hover);
+  color: var(--header-text-strong);
+}
+
+.locale-toggle-mobile .locale-toggle-track {
+  width: 100%;
+  justify-content: stretch;
+}
+
+.locale-toggle-mobile .locale-toggle-option {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+}
+
 .header-locale-link {
   color: var(--header-text);
 }
