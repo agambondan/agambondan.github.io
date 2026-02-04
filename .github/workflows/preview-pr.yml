@@ -1,0 +1,87 @@
+name: PR Preview Deploy
+
+on:
+  pull_request:
+    branches: ["master"]
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preview-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate CV data
+        run: npm run validate:cv
+
+      - name: Build preview
+        run: npm run build:web
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NEXT_BASE_PATH: /previews/pr-${{ github.event.pull_request.number }}
+
+      - name: Deploy preview to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./apps/web/out
+          destination_dir: previews/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+
+  cleanup-preview:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+        continue-on-error: true
+
+      - name: Remove preview folder
+        run: |
+          if [ ! -d ".git" ]; then
+            echo "gh-pages branch not found. Nothing to clean."
+            exit 0
+          fi
+
+          preview_dir="previews/pr-${{ github.event.pull_request.number }}"
+          if [ ! -d "$preview_dir" ]; then
+            echo "Preview directory does not exist. Nothing to clean."
+            exit 0
+          fi
+
+          rm -rf "$preview_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(preview): cleanup PR #${{ github.event.pull_request.number }}"
+          git push origin HEAD:gh-pages

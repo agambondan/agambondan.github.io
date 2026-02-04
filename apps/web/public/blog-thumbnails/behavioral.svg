@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Behavioral Patterns</title>
+  <desc id="desc">Thumbnail for behavioral design patterns in Go</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" rx="24" />
+  <circle cx="940" cy="190" r="160" fill="#22c55e" opacity="0.18" />
+  <circle cx="1020" cy="330" r="120" fill="#06b6d4" opacity="0.16" />
+  <text x="80" y="250" fill="#f0f9ff" font-size="64" font-family="ui-sans-serif, system-ui" font-weight="700">Behavioral Pattern</text>
+  <text x="80" y="330" fill="#d1fae5" font-size="44" font-family="ui-sans-serif, system-ui" font-weight="500">Go + Clean/Hexagonal</text>
+</svg>

@@ -1,0 +1,157 @@
+{
+  "identity": {
+    "name": "Firman Agam",
+    "title": "Backend Engineer",
+    "location": "Jakarta, Indonesia, 13910",
+    "email": "agamwork28@gmail.com",
+    "phone": "+6281214025919"
+  },
+  "links": {
+    "product": "https://jangkauin.site",
+    "portfolio": "https://agambondan.github.io",
+    "github": "https://github.com/agambondan"
+  },
+  "summary": "Backend Engineer with experience building scalable backend systems in enterprise and product-driven environments. Specialized in Golang, REST/gRPC APIs, and system design, with hands-on experience improving performance, scalability, and reliability of production systems. Strong background in translating business requirements into robust technical solutions.",
+  "experience": [
+    {
+      "role": "Backend Engineer",
+      "company": "Blue Bird Group",
+      "location": "Jakarta",
+      "period": {
+        "start": "Oct 2022",
+        "end": "Present"
+      },
+      "bullets": [
+        "Developed backend systems for promo, loyalty, subscription, gamification, and campaign features used in production.",
+        "Designed and implemented high-performance promo evaluation services using Golang and gRPC.",
+        "Improved system scalability and robustness through backend and database architecture enhancements.",
+        "Built critical promo capabilities such as auto-apply, pre-validation, and optimized promo listing.",
+        "Reduced latency and improved throughput to handle a large volume of concurrent active promotions."
+      ]
+    },
+    {
+      "role": "Full Stack Engineer",
+      "company": "Envmission",
+      "location": "Remote",
+      "period": {
+        "start": "May 2025",
+        "end": "Aug 2025"
+      },
+      "bullets": [
+        "Designed and developed a waste tracking product used by multiple tenants and field operation teams.",
+        "Built backend services using Golang and frontend applications using Next.js.",
+        "Implemented real-time notifications to ensure timely coordination between tenants and field teams.",
+        "Delivered a scalable, product-ready system aligned with operational workflows."
+      ]
+    },
+    {
+      "role": "Backend Engineer",
+      "company": "Bussan Auto Finance",
+      "location": "Jakarta",
+      "period": {
+        "start": "Jul 2021",
+        "end": "Oct 2022"
+      },
+      "bullets": [
+        "Developed and maintained the Pradana backend product supporting loan-related business processes.",
+        "Implemented core business logic and data persistence for financial workflows with transactional consistency.",
+        "Improved reliability of user communication by implementing Firebase Cloud Messaging for real-time loan status notifications.",
+        "Optimized PostgreSQL queries to support growing transaction volume."
+      ]
+    },
+    {
+      "role": "Software Developer",
+      "company": "Tekno Gemilang Indonesia",
+      "location": "Jakarta",
+      "period": {
+        "start": "Sep 2021",
+        "end": "Oct 2022"
+      },
+      "bullets": [
+        "Contributed to backend systems for a travel platform supporting hotel and flight booking services.",
+        "Integrated multiple external travel service providers into a unified backend flow.",
+        "Improved backend stability and data consistency across service integrations in a multi-service environment."
+      ]
+    },
+    {
+      "role": "API Gateway Operational",
+      "company": "Bank Rakyat Indonesia Tbk",
+      "location": "Jakarta",
+      "period": {
+        "start": "Mar 2020",
+        "end": "Jun 2021"
+      },
+      "bullets": [
+        "Supported large-scale API gateway operations handling high-volume enterprise traffic.",
+        "Built automation tools using Golang to eliminate repetitive operational reporting, reducing manual effort and error rates.",
+        "Designed fraud indicator alerts based on API request and response patterns from Apigee logs.",
+        "Integrated monitoring data from ELK Stack into automated reporting pipelines delivered to Telegram and Google Spreadsheet."
+      ]
+    },
+    {
+      "role": "Bootcamp Trainee",
+      "company": "Enigma Camp",
+      "location": "Jakarta",
+      "period": {
+        "start": "Oct 2019",
+        "end": "Feb 2020"
+      },
+      "bullets": [
+        "Completed an intensive software engineering bootcamp focused on building strong programming fundamentals and professional development practices.",
+        "Built backend services using Spring Boot and applied SOLID principles, OOP, and TDD.",
+        "Developed frontend applications using React.js as part of team-based projects simulating real-world workflows."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Gunadarma University",
+      "degree": "BA in Information Systems",
+      "location": "Jakarta",
+      "period": {
+        "start": "Jul 2015",
+        "end": "Jun 2020"
+      }
+    }
+  ],
+  "languages": [
+    {
+      "name": "English",
+      "proficiency": "Intermediate"
+    },
+    {
+      "name": "Indonesia",
+      "proficiency": "Native"
+    }
+  ],
+  "skills": {
+    "backend": [
+      "Golang",
+      "REST API",
+      "gRPC",
+      "Spring Boot",
+      "PostgreSQL",
+      "Firebase Cloud Messaging"
+    ],
+    "frontend": [
+      "React.js",
+      "Next.js",
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "architecture": [
+      "System Design",
+      "Scalability Optimization",
+      "Reliability Engineering",
+      "Transactional Consistency"
+    ],
+    "tooling": [
+      "ELK Stack",
+      "Apigee",
+      "Google Spreadsheet Automation",
+      "Telegram Bot Integration",
+      "Git"
+    ]
+  }
+}

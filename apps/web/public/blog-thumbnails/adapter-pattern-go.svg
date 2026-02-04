@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Adapter Pattern Pattern</title>
+  <desc id="desc">Thumbnail for Adapter Pattern design pattern in Go</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(271 70% 15%)" />
+      <stop offset="100%" stop-color="hsl(306 78% 40%)" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" rx="24"/>
+  <circle cx="970" cy="130" r="170" fill="hsl(351 100% 65%)" opacity="0.16"/>
+  <circle cx="230" cy="560" r="220" fill="hsl(41 95% 70%)" opacity="0.14"/>
+  <text x="76" y="248" fill="#eef2ff" font-size="58" font-family="ui-sans-serif, system-ui" font-weight="700">Adapter Pattern</text>
+  <text x="76" y="320" fill="#dbeafe" font-size="38" font-family="ui-sans-serif, system-ui" font-weight="500">Design Pattern in Go</text>
+  <text x="76" y="382" fill="#bfdbfe" font-size="30" font-family="ui-sans-serif, system-ui">Clean / Hexagonal Implementation</text>
+</svg>

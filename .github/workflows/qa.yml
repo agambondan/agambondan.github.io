@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 concurrency:
   group: qa-${{ github.ref }}
@@ -15,51 +17,7 @@ concurrency:
 
 jobs:
   qa-web:
-    name: QA Web
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-
-      - name: Validate CV data
-        run: npm run validate:cv
-
-      - name: Run web QA
-        run: npm run qa:web
-
-      - name: Upload web Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-playwright-report
-          retention-days: 7
-          path: |
-            apps/web/playwright-report
-            apps/web/test-results
-          if-no-files-found: ignore
-
-      - name: Upload web Lighthouse report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-lighthouse-report
-          retention-days: 7
-          path: apps/web/.lighthouseci
-          if-no-files-found: ignore
+    uses: ./.github/workflows/reusable-visual-perf.yml
 
   qa-mobile:
     name: QA Mobile
@@ -111,3 +69,52 @@ jobs:
           echo "QA web status: ${{ needs.qa-web.result }}" >> $GITHUB_STEP_SUMMARY
           echo "QA mobile status: ${{ needs.qa-mobile.result }}" >> $GITHUB_STEP_SUMMARY
           echo "Artifacts available in workflow run page." >> $GITHUB_STEP_SUMMARY
+
+      - name: Update sticky PR QA comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- qa-summary -->';
+            const pr = context.payload.pull_request;
+            if (!pr) return;
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const basePath = repo.endsWith('.github.io') ? '' : `/${repo}`;
+            const previewUrl = `https://${owner}.github.io${basePath}/previews/pr-${pr.number}/`;
+
+            const body = [
+              marker,
+              "## QA Summary",
+              `- QA Web: **${{ needs.qa-web.result }}**`,
+              `- QA Mobile: **${{ needs.qa-mobile.result }}**`,
+              `- Preview URL: ${previewUrl}`,
+              `- Workflow run: ${runUrl}`,
+              "- Artifacts: `web-playwright-report`, `web-lighthouse-report`, `mobile-playwright-report`"
+            ].join("\\n");
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: pr.number,
+              per_page: 100
+            });
+            const existing = comments.find((comment) => comment.user?.type === 'Bot' && comment.body?.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pr.number,
+                body
+              });
+            }

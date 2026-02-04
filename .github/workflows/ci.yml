@@ -25,39 +25,9 @@ jobs:
         uses: rhysd/actionlint@v1
 
   quality:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
     needs: workflow-lint
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    uses: ./.github/workflows/reusable-node-quality.yml
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Validate shared CV data
-        run: npm run validate:cv
-
-      - name: Typecheck workspace
-        run: npm run typecheck
-
-      - name: Run tests
-        run: npm run test
-
-      - name: Build web app
-        run: npm run build:web
-        env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
-
-      - name: Build mobile app
-        run: npm run build:mobile
-
-      - name: Capacitor sync sanity
-        run: npm run cap:sync
+  security:
+    needs: workflow-lint
+    uses: ./.github/workflows/reusable-security.yml

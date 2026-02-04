@@ -1,68 +1,78 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Firman Agam CV Platform
 
-## Available Scripts
+Monorepo for a modern bilingual CV platform with shared data source:
 
-In the project directory, you can run:
+- `apps/web`: Next.js + Tailwind + shadcn-style components (GitHub Pages static export).
+- `apps/mobile`: Ionic React + Capacitor foundation (tabs + dark mode).
+- `packages/cv-data`: typed CV contract + locale JSON (`en`, `id`).
+- `legacy/react-cv`: archived previous CRA portfolio app.
 
-### `yarn start`
+## Requirements
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Node.js 20+
+- npm 10+
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Getting Started
 
-### `yarn test`
+```bash
+npm install
+npm run validate:cv
+npm run dev:web
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In another terminal:
 
-### `yarn build`
+```bash
+npm run dev:mobile
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Useful Scripts
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- `npm run build:web` - build Next.js static export to `apps/web/out`
+- `npm run build:mobile` - build Ionic app bundle
+- `npm run cap:sync` - build mobile and sync with Capacitor
+- `npm run qa:web` - web QA (unit + Playwright E2E + visual snapshot + Lighthouse)
+- `npm run qa:mobile` - mobile QA (unit + Playwright smoke + build)
+- `npm run qa:full` - full QA gate for web, mobile, and Capacitor sync
+- `npm run sync:old-cv` - rebuild archived CRA app and publish it to `apps/web/public/old-cv`
+- `npm run cap:android` - open Android Studio project
+- `npm run cap:ios` - open Xcode project
+- `npm run typecheck` - run type checks across workspaces
+- `npm run test` - run tests across workspaces
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## GitHub Pages Deployment
 
-### `yarn eject`
+Workflow: `.github/workflows/deploy-web.yml`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This repo auto-detects whether it is running on user site (`username.github.io`) or project site and configures Next.js `basePath` accordingly.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## CI/CD and Security
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- `CI` workflow runs workflow lint, workspace quality checks, secret scanning, and dependency audit.
+- `QA Automation` enforces web visual regression and Lighthouse budgets on PRs.
+- PR preview is published to `previews/pr-<number>/` on `gh-pages`.
+- Security baseline checklist: `.github/SECURITY_BASELINE.md`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Routes
 
-## Learn More
+- `/` - modern developer profile (projects + writing + skills)
+- `/cv` - full bilingual CV page
+- `/blog` - engineering blog
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Migration note: home route now focuses on developer profile, while detailed CV content is served at `/cv`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## CV Content Source
 
-### Code Splitting
+Locale files:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- `packages/cv-data/locales/en/cv.json`
+- `packages/cv-data/locales/id/cv.json`
 
-### Analyzing the Bundle Size
+Contract and helpers:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- `packages/cv-data/src/schema.ts`
+- `packages/cv-data/src/index.ts`
 
-### Making a Progressive Web App
+## Mobile Release Templates
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Release preparation docs and templates are in `apps/mobile/docs/release`.

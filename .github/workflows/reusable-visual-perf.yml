@@ -1,0 +1,56 @@
+name: Reusable Visual Perf
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  qa-web:
+    name: QA Web
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate CV data
+        run: npm run validate:cv
+
+      - name: Run web QA (unit + e2e + visual + lighthouse)
+        run: npm run qa:web
+
+      - name: Upload web Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-playwright-report
+          retention-days: 7
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+            apps/web/tests/e2e/visual.spec.ts-snapshots
+          if-no-files-found: ignore
+
+      - name: Upload web Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-lighthouse-report
+          retention-days: 7
+          path: apps/web/.lighthouseci
+          if-no-files-found: ignore

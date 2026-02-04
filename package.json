@@ -1,40 +1,31 @@
 {
-  "name": "about-me",
-  "version": "0.1.0",
+  "name": "agambondan-platform",
+  "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
-  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "dev:web": "npm --workspace apps/web run dev",
+    "build:web": "npm --workspace apps/web run build",
+    "export:web": "npm --workspace apps/web run export",
+    "dev:mobile": "npm --workspace apps/mobile run dev",
+    "build:mobile": "npm --workspace apps/mobile run build",
+    "cap:add:android": "npm --workspace apps/mobile run cap:add:android",
+    "cap:add:ios": "npm --workspace apps/mobile run cap:add:ios",
+    "cap:sync": "npm --workspace apps/mobile run cap:sync",
+    "cap:android": "npm --workspace apps/mobile run cap:android",
+    "cap:ios": "npm --workspace apps/mobile run cap:ios",
+    "sync:old-cv": "npm --prefix legacy/react-cv ci && SKIP_PREFLIGHT_CHECK=true NODE_OPTIONS=--openssl-legacy-provider PUBLIC_URL=. npm --prefix legacy/react-cv run build && rsync -a --delete legacy/react-cv/build/ apps/web/public/old-cv/",
+    "qa:web": "npm --workspace apps/web run qa",
+    "qa:mobile": "npm --workspace apps/mobile run qa",
+    "qa:e2e": "npm --workspace apps/web run test:e2e",
+    "qa:lighthouse": "npm --workspace apps/web run test:lighthouse",
+    "qa:full": "npm run validate:cv && npm run typecheck && npm run test && npm run qa:web && npm run qa:mobile && npm run cap:sync",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "validate:cv": "npm --workspace packages/cv-data run validate"
   }
 }
