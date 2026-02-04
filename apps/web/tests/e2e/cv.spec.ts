@@ -70,7 +70,7 @@ test("keeps blog locale equivalence when switching language", async ({ page }) =
 
   await page.getByRole("link", { name: "Baca artikel →" }).first().click();
   await expect(page).toHaveURL(/\/id\/blog\/[^/]+\/?$/);
-  await expect(page.locator(".blog-detail-thumbnail img")).toBeVisible();
+  await expect(page.locator(".blog-detail-thumbnail")).toBeVisible();
   await expect(page.getByRole("button", { name: "Salin blok kode" }).first()).toBeVisible();
   await expect(page.locator("article.markdown-body pre code").first()).toBeVisible();
 

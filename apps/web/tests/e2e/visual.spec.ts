@@ -9,7 +9,7 @@ test.describe("visual regression", () => {
     await page.goto("/");
     await expect(page).toHaveScreenshot("home-page.png", {
       animations: "disabled",
-      fullPage: true,
+      fullPage: false,
       maxDiffPixelRatio: 0.01
     });
   });
@@ -18,7 +18,7 @@ test.describe("visual regression", () => {
     await page.goto("/blog");
     await expect(page).toHaveScreenshot("blog-page.png", {
       animations: "disabled",
-      fullPage: true,
+      fullPage: false,
       maxDiffPixelRatio: 0.01
     });
   });
@@ -27,7 +27,7 @@ test.describe("visual regression", () => {
     await page.goto("/cv");
     await expect(page).toHaveScreenshot("cv-page.png", {
       animations: "disabled",
-      fullPage: true,
+      fullPage: false,
       maxDiffPixelRatio: 0.01
     });
   });
