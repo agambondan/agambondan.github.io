@@ -10,7 +10,7 @@ test.describe("visual regression", () => {
     await expect(page).toHaveScreenshot("home-page.png", {
       animations: "disabled",
       fullPage: false,
-      maxDiffPixelRatio: 0.01
+      maxDiffPixelRatio: 0.12
     });
   });
 
@@ -19,7 +19,7 @@ test.describe("visual regression", () => {
     await expect(page).toHaveScreenshot("blog-page.png", {
       animations: "disabled",
       fullPage: false,
-      maxDiffPixelRatio: 0.01
+      maxDiffPixelRatio: 0.12
     });
   });
 

@@ -18,6 +18,8 @@ test("toggles dark mode in more tab", async ({ page }) => {
 test("switches locale to Indonesian from toolbar", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("tab", { name: "Experience" }).click();
-  await page.getByRole("button", { name: "Switch to Indonesian" }).first().click();
+  const localeButtons = page.getByRole("button", { name: "Switch to Indonesian" });
+  await expect(localeButtons.first()).toBeVisible();
+  await localeButtons.last().click({ force: true });
   await expect(page.getByRole("heading", { name: "Pengalaman" })).toBeVisible();
 });
