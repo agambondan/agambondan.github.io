@@ -51,6 +51,11 @@ function sortRepos(repos: GithubProject[]): GithubProject[] {
 }
 
 export async function getGithubProjects(limit = 6): Promise<GithubProject[]> {
+  if (process.env.GITHUB_PROJECTS_SOURCE === "fallback") {
+    cachedProjects = sortRepos([...fallbackProjects] as GithubProject[]);
+    return cachedProjects.slice(0, limit);
+  }
+
   if (cachedProjects) {
     return cachedProjects.slice(0, limit);
   }

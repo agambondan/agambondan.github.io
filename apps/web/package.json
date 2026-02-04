@@ -10,8 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test",
-    "test:visual": "playwright test tests/e2e/visual.spec.ts",
+    "test:e2e": "GITHUB_PROJECTS_SOURCE=fallback playwright test",
+    "test:visual": "GITHUB_PROJECTS_SOURCE=fallback playwright test tests/e2e/visual.spec.ts",
     "test:lighthouse": "npm run build && lhci autorun --config=./lighthouserc.json",
     "qa": "npm run test && npm run test:e2e && npm run test:visual && npm run test:lighthouse"
   },

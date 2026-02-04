@@ -66,9 +66,11 @@ jobs:
     steps:
       - name: QA Summary
         run: |
-          echo "QA web status: ${{ needs.qa-web.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "QA mobile status: ${{ needs.qa-mobile.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "Artifacts available in workflow run page." >> $GITHUB_STEP_SUMMARY
+          {
+            echo "QA web status: ${{ needs.qa-web.result }}"
+            echo "QA mobile status: ${{ needs.qa-mobile.result }}"
+            echo "Artifacts available in workflow run page."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Update sticky PR QA comment
         if: github.event_name == 'pull_request'
