@@ -31,7 +31,7 @@ jobs:
       - name: Validate CV data
         run: npm run validate:cv
 
-      - name: Run web QA (unit + e2e + visual + lighthouse)
+      - name: Run web QA (unit + e2e smoke + visual + lighthouse)
         run: npm run qa:web
 
       - name: Upload web Playwright report
