@@ -39,7 +39,10 @@ const copy = {
     newDesc: "Modern, bilingual, and structured for current roles.",
     oldDesc: "Legacy archive to compare your previous profile version.",
     switchToEnglish: "Switch to English",
-    switchToIndonesian: "Switch to Indonesian"
+    switchToIndonesian: "Switch to Indonesian",
+    downloadWebCV: "Download Web CV PDF",
+    downloadDocCV: "Download Document CV PDF",
+    downloadATSCV: "Download ATS CV PDF"
   },
   id: {
     summary: "Ringkasan",
@@ -68,7 +71,10 @@ const copy = {
     newDesc: "Modern, bilingual, dan terstruktur untuk kebutuhan role saat ini.",
     oldDesc: "Arsip lama untuk membandingkan versi profil sebelumnya.",
     switchToEnglish: "Ubah ke Bahasa Inggris",
-    switchToIndonesian: "Ubah ke Bahasa Indonesia"
+    switchToIndonesian: "Ubah ke Bahasa Indonesia",
+    downloadWebCV: "Unduh CV Web PDF",
+    downloadDocCV: "Unduh CV Dokumen PDF",
+    downloadATSCV: "Unduh CV ATS PDF"
   }
 } as const;
 
@@ -182,6 +188,32 @@ export function CVPage() {
             >
               ID
             </Button>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <a
+                className="inline-flex h-9 items-center justify-center rounded-md bg-white/20 px-3 text-sm font-medium text-white transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                href={`/cv/firman-agam-cv-web-${locale}.pdf`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {dictionary.downloadWebCV}
+              </a>
+              <a
+                className="inline-flex h-9 items-center justify-center rounded-md border border-white/40 bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                href={`/cv/firman-agam-cv-doc-${locale}.pdf`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {dictionary.downloadDocCV}
+              </a>
+              <a
+                className="inline-flex h-9 items-center justify-center rounded-md border border-white/40 bg-white/10 px-3 text-sm font-medium text-white transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                href={`/cv/firman-agam-cv-ats-${locale}.pdf`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {dictionary.downloadATSCV}
+              </a>
             </div>
           </div>
         </CardContent>

@@ -27,8 +27,32 @@ describe("CVPage", () => {
     render(<CVPage />);
     fireEvent.click(screen.getByRole("button", { name: /open new cv|buka cv baru/i }));
     expect(screen.getByText("Summary")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download Web CV PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-web-en.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Download Document CV PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-doc-en.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Download ATS CV PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-ats-en.pdf"
+    );
     fireEvent.click(screen.getByRole("button", { name: "Switch to Indonesian" }));
     expect(screen.getByText("Ringkasan")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Unduh CV Web PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-web-id.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Unduh CV Dokumen PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-doc-id.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Unduh CV ATS PDF" })).toHaveAttribute(
+      "href",
+      "/cv/firman-agam-cv-ats-id.pdf"
+    );
   });
 
   it("opens old CV mode and renders iframe", () => {
