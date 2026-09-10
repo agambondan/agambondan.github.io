@@ -2,6 +2,7 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DeployedProjects } from "@/components/deployed-projects";
 import { ProjectsGrid } from "@/components/projects-grid";
 import { getBlogPosts } from "@/lib/blog-posts";
 import type { GithubProject } from "@/lib/github-projects";
@@ -38,6 +39,9 @@ const copy = {
     projects: "My Projects",
     projectsDesc:
       "Top starred public repositories from GitHub, filtered to active non-fork projects.",
+    deployments: "Live Deployments",
+    deploymentsDesc: "Products currently running in production on my own VPS.",
+    live: "Live",
     updated: "Updated",
     seeAllProjects: "See all projects",
     loadMore: "Load more",
@@ -79,6 +83,9 @@ const copy = {
     projects: "Proyek Saya",
     projectsDesc:
       "Repository publik dengan bintang tertinggi dari GitHub, difilter untuk proyek aktif non-fork.",
+    deployments: "Deployment Aktif",
+    deploymentsDesc: "Produk yang sedang berjalan di production di VPS saya sendiri.",
+    live: "Live",
     updated: "Diperbarui",
     seeAllProjects: "Lihat semua proyek",
     loadMore: "Muat lebih banyak",
@@ -286,6 +293,13 @@ export function ProfilePage({
         locale={locale}
         projects={projects}
       />
+
+      <section className="space-y-4">
+        <h2 className="fade-up profile-section-title type-section-title">{t.deployments}</h2>
+        <p className="type-body fade-up profile-text-secondary">{t.deploymentsDesc}</p>
+      </section>
+
+      <DeployedProjects liveLabel={t.live} locale={locale} />
 
       <section className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
         <Card className="glass-card fade-up">
