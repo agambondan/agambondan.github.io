@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getBlogPosts } from "@/lib/blog-posts";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://agambondan.github.io";
   const staticRoutes: MetadataRoute.Sitemap = [
