@@ -271,6 +271,7 @@ export function CVPage() {
                       <h3 className="text-base font-semibold md:text-lg">{job.role}</h3>
                       <CardDescription>
                         {job.company} · {job.location} · {periodLabel(job.period.start, job.period.end)}
+                        {job.employmentType ? ` · ${job.employmentType}` : ""}
                       </CardDescription>
                     </div>
                     <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">

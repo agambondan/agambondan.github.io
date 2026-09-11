@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 import json
+import re
+from datetime import datetime
 from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
+from reportlab.platypus import HRFlowable, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[3]
 CV_DIR = ROOT / "packages" / "cv-data" / "locales"
@@ -44,6 +49,23 @@ ATS = {
     "muted": colors.HexColor("#4D4D4D"),
     "divider": colors.HexColor("#CFCFCF"),
     "card": colors.HexColor("#FFFFFF"),
+}
+
+ATS_BAND = colors.HexColor("#F3F4F6")
+ATS_TEXT = colors.HexColor("#111827")
+ATS_MUTED = colors.HexColor("#4B5563")
+ATS_DIVIDER = colors.HexColor("#D1D5DB")
+
+ATS_LABELS = {
+    "en": {"websites": "Websites and Social Links"},
+    "id": {"websites": "Website dan Tautan Sosial"},
+}
+
+LINK_LABELS = {
+    "product": "Product",
+    "portfolio": "Portfolio",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
 }
 
 LABELS = {
@@ -134,9 +156,13 @@ def draw_experience_card(c, item, y, palette, max_bullets=4):
     c.setFont("Helvetica-Bold", 11)
     c.drawString(MARGIN_X + 10, y - 8, f"{item['role']} - {item['company']}")
 
+    meta = f"{item['location']} | {item['period']['start']} - {item['period']['end']}"
+    if item.get("employmentType"):
+        meta += f" | {item['employmentType']}"
+
     c.setFillColor(palette["muted"])
     c.setFont("Helvetica", 8.8)
-    c.drawString(MARGIN_X + 10, y - 21, f"{item['location']} | {item['period']['start']} - {item['period']['end']}")
+    c.drawString(MARGIN_X + 10, y - 21, meta)
 
     by = y - 36
     for bullet in item["bullets"][:max_bullets]:
@@ -391,10 +417,11 @@ def render_doc(locale):
     return out
 
 
-def render_ats(locale):
+def render_ats_legacy(locale):
+    """Kept for reference only - not wired up to the CLI. Superseded by render_ats."""
     cv = json.loads((CV_DIR / locale / "cv.json").read_text())
     t = LABELS[locale]
-    out = OUT_DIR / f"firman-agam-cv-ats-{locale}.pdf"
+    out = OUT_DIR / f"firman-agam-cv-ats-legacy-{locale}.pdf"
     c = canvas.Canvas(str(out), pagesize=A4)
     p = ATS
 
@@ -476,6 +503,135 @@ def render_ats(locale):
 
     draw_footer(c, t["footer"], f"Generated for {cv['identity']['name']}", p)
     c.save()
+    return out
+
+
+def _ats_keyword_bank(cv):
+    words = []
+    for group in cv["skills"].values():
+        words.extend(group)
+    return sorted(set(words), key=len, reverse=True)
+
+
+def _ats_bold_keywords(text, keywords):
+    for kw in keywords:
+        pattern = re.compile(r"\b" + re.escape(kw) + r"\b", re.IGNORECASE)
+        text = pattern.sub(lambda m: f"<b>{m.group(0)}</b>", text, count=1)
+    return text
+
+
+def _ats_parse_start(period):
+    try:
+        return datetime.strptime(period["start"], "%b %Y")
+    except ValueError:
+        return datetime.min
+
+
+def render_ats(locale):
+    cv = json.loads((CV_DIR / locale / "cv.json").read_text())
+    t = LABELS[locale]
+    at = ATS_LABELS[locale]
+    out = OUT_DIR / f"firman-agam-cv-ats-{locale}.pdf"
+    content_w = PAGE_W - (MARGIN_X * 2)
+    left_w, right_w = content_w * 0.62, content_w * 0.38
+
+    doc = SimpleDocTemplate(
+        str(out),
+        pagesize=A4,
+        leftMargin=MARGIN_X,
+        rightMargin=MARGIN_X,
+        topMargin=48,
+        bottomMargin=40,
+    )
+
+    name_style = ParagraphStyle("ats_name", fontName="Helvetica", fontSize=21, leading=24, alignment=TA_CENTER, textColor=ATS_TEXT, spaceAfter=4)
+    title_style = ParagraphStyle("ats_title", fontName="Helvetica", fontSize=12.5, leading=15, alignment=TA_CENTER, textColor=ATS_MUTED, spaceAfter=6)
+    contact_style = ParagraphStyle("ats_contact", fontName="Helvetica", fontSize=9.6, leading=13, alignment=TA_CENTER, textColor=ATS_MUTED)
+    section_style = ParagraphStyle("ats_section", fontName="Helvetica-Bold", fontSize=10.6, leading=13, alignment=TA_CENTER, textColor=ATS_TEXT)
+    body_style = ParagraphStyle("ats_body", fontName="Helvetica", fontSize=9.4, leading=13.2, textColor=ATS_MUTED)
+    role_style = ParagraphStyle("ats_role", fontName="Helvetica-Bold", fontSize=10.4, leading=13, textColor=ATS_TEXT)
+    date_style = ParagraphStyle("ats_date", fontName="Helvetica", fontSize=9.4, leading=12.6, alignment=TA_RIGHT, textColor=ATS_TEXT)
+    bullet_style = ParagraphStyle("ats_bullet", fontName="Helvetica", fontSize=9.3, leading=13, textColor=ATS_TEXT, leftIndent=12, spaceAfter=3)
+    edu_meta_style = ParagraphStyle("ats_edu_meta", fontName="Helvetica", fontSize=8.8, leading=11.4, textColor=ATS_MUTED)
+    lang_style = ParagraphStyle("ats_lang", fontName="Helvetica", fontSize=9.4, leading=13, textColor=ATS_TEXT)
+
+    def section_band(text):
+        tbl = Table([[Paragraph(text.upper(), section_style)]], colWidths=[content_w])
+        tbl.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), ATS_BAND),
+            ("TOPPADDING", (0, 0), (-1, -1), 7),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+        ]))
+        return tbl
+
+    def two_col_row(left_para, right_para):
+        row = Table([[left_para, right_para]], colWidths=[left_w, right_w])
+        row.setStyle(TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 0),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+            ("TOPPADDING", (0, 0), (-1, -1), 0),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ]))
+        return row
+
+    def dotted_divider(space_after=6):
+        return HRFlowable(width=left_w, thickness=0.6, color=ATS_DIVIDER, spaceBefore=2, spaceAfter=space_after, hAlign="LEFT", dash=(1, 2))
+
+    keywords = _ats_keyword_bank(cv)
+    story = []
+
+    story.append(Paragraph(cv["identity"]["name"].upper(), name_style))
+    story.append(Paragraph(cv["identity"]["title"], title_style))
+    story.append(Paragraph(cv["identity"]["location"], contact_style))
+    story.append(Paragraph(f"{cv['identity']['email']} | {cv['identity']['phone']}", contact_style))
+    story.append(Spacer(1, 14))
+
+    story.append(section_band(at["websites"]))
+    story.append(Spacer(1, 10))
+    for key, url in cv["links"].items():
+        if url:
+            story.append(Paragraph(f"{LINK_LABELS.get(key, key.title())}: <b>{url}</b>", body_style))
+    story.append(Spacer(1, 14))
+
+    story.append(section_band(t["summary"]))
+    story.append(Spacer(1, 10))
+    story.append(Paragraph(_ats_bold_keywords(cv["summary"], keywords), body_style))
+    story.append(Spacer(1, 14))
+
+    story.append(section_band(t["experience"]))
+    story.append(Spacer(1, 10))
+    experiences = sorted(cv["experience"], key=lambda e: _ats_parse_start(e["period"]))
+    for exp in experiences:
+        date_line = f"{exp['period']['start']} – {exp['period']['end']} | {exp['location']}"
+        if exp.get("employmentType"):
+            date_line += f" | {exp['employmentType']}"
+        story.append(two_col_row(
+            Paragraph(f"{exp['role']}, {exp['company']}", role_style),
+            Paragraph(date_line, date_style),
+        ))
+        story.append(dotted_divider())
+        for bullet in exp["bullets"]:
+            story.append(Paragraph(f"● {_ats_bold_keywords(bullet, keywords)}", bullet_style))
+        story.append(Spacer(1, 10))
+
+    story.append(section_band(t["education"]))
+    story.append(Spacer(1, 10))
+    for edu in cv["education"]:
+        date_line = f"{edu['period']['start'][-4:]} – {edu['period']['end'][-4:]} | {edu['location']}"
+        story.append(two_col_row(
+            Paragraph(f"{edu['institution']} — {edu['degree']}", role_style),
+            Paragraph(date_line, date_style),
+        ))
+        story.append(dotted_divider(space_after=2))
+    story.append(Spacer(1, 8))
+
+    story.append(section_band(t["languages"]))
+    story.append(Spacer(1, 10))
+    lang_line = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".join(f"<b>{l['name']}</b>: {l['proficiency']}" for l in cv["languages"])
+    story.append(Paragraph(lang_line, lang_style))
+
+    doc.build(story)
     return out
 
 

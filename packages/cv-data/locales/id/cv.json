@@ -9,7 +9,8 @@
   "links": {
     "product": "https://jangkauin.site",
     "portfolio": "https://agambondan.github.io",
-    "github": "https://github.com/agambondan"
+    "github": "https://github.com/agambondan",
+    "linkedin": "https://www.linkedin.com/in/firman-agam/"
   },
   "summary": "Backend Engineer berpengalaman membangun sistem backend yang scalable di lingkungan enterprise dan product-driven. Spesialisasi pada Golang, REST/gRPC API, dan system design, dengan pengalaman langsung dalam meningkatkan performa, skalabilitas, dan reliability sistem produksi. Memiliki kemampuan kuat menerjemahkan kebutuhan bisnis menjadi solusi teknis yang kokoh.",
   "experience": [
@@ -26,7 +27,7 @@
         "Merancang dan mengimplementasikan service evaluasi promo berperforma tinggi menggunakan Golang dan gRPC.",
         "Meningkatkan skalabilitas dan robustness sistem melalui penguatan arsitektur backend dan database.",
         "Membangun kapabilitas promo kritikal seperti auto-apply, pre-validation, dan optimasi daftar promo.",
-        "Menurunkan latency dan meningkatkan throughput untuk menangani volume promo aktif secara concurrent dalam jumlah besar."
+        "Menurunkan latency rata-rata sekitar 30% dan meningkatkan throughput hingga ~2x, memungkinkan sistem menangani 10.000+ promo aktif secara concurrent."
       ]
     },
     {
@@ -56,13 +57,14 @@
         "Mengembangkan dan memelihara produk backend Pradana untuk mendukung proses bisnis terkait pinjaman.",
         "Mengimplementasikan business logic inti dan data persistence untuk workflow finansial dengan transactional consistency.",
         "Meningkatkan keandalan komunikasi pengguna dengan implementasi Firebase Cloud Messaging untuk notifikasi status pinjaman secara real-time.",
-        "Mengoptimalkan query PostgreSQL untuk mendukung pertumbuhan volume transaksi."
+        "Mengoptimalkan query PostgreSQL, memangkas waktu eksekusi rata-rata sekitar 40% untuk mendukung pertumbuhan volume transaksi."
       ]
     },
     {
       "role": "Software Developer",
       "company": "Tekno Gemilang Indonesia",
       "location": "Jakarta",
+      "employmentType": "Part-time",
       "period": {
         "start": "Sep 2021",
         "end": "Oct 2022"
@@ -83,7 +85,7 @@
       },
       "bullets": [
         "Menangani operasional API gateway skala besar dengan traffic enterprise bervolume tinggi.",
-        "Membangun automation tools menggunakan Golang untuk menghilangkan pelaporan operasional repetitif sehingga menurunkan effort manual dan tingkat error.",
+        "Membangun automation tools menggunakan Golang untuk menghilangkan pelaporan operasional repetitif, memangkas effort manual sekitar 70% dan menurunkan tingkat error pelaporan.",
         "Merancang alert indikator fraud berdasarkan pola request dan response API dari log Apigee.",
         "Mengintegrasikan data monitoring dari ELK Stack ke pipeline reporting otomatis yang dikirim ke Telegram dan Google Spreadsheet."
       ]

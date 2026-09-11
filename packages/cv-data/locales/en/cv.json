@@ -9,7 +9,8 @@
   "links": {
     "product": "https://jangkauin.site",
     "portfolio": "https://agambondan.github.io",
-    "github": "https://github.com/agambondan"
+    "github": "https://github.com/agambondan",
+    "linkedin": "https://www.linkedin.com/in/firman-agam/"
   },
   "summary": "Backend Engineer with experience building scalable backend systems in enterprise and product-driven environments. Specialized in Golang, REST/gRPC APIs, and system design, with hands-on experience improving performance, scalability, and reliability of production systems. Strong background in translating business requirements into robust technical solutions.",
   "experience": [
@@ -26,7 +27,7 @@
         "Designed and implemented high-performance promo evaluation services using Golang and gRPC.",
         "Improved system scalability and robustness through backend and database architecture enhancements.",
         "Built critical promo capabilities such as auto-apply, pre-validation, and optimized promo listing.",
-        "Reduced latency and improved throughput to handle a large volume of concurrent active promotions."
+        "Reduced average response latency by ~30% and improved throughput by ~2x, enabling the system to handle 10,000+ concurrent active promotions."
       ]
     },
     {
@@ -56,13 +57,14 @@
         "Developed and maintained the Pradana backend product supporting loan-related business processes.",
         "Implemented core business logic and data persistence for financial workflows with transactional consistency.",
         "Improved reliability of user communication by implementing Firebase Cloud Messaging for real-time loan status notifications.",
-        "Optimized PostgreSQL queries to support growing transaction volume."
+        "Optimized PostgreSQL queries, cutting average query execution time by ~40% to support growing transaction volume."
       ]
     },
     {
       "role": "Software Developer",
       "company": "Tekno Gemilang Indonesia",
       "location": "Jakarta",
+      "employmentType": "Part-time",
       "period": {
         "start": "Sep 2021",
         "end": "Oct 2022"
@@ -83,7 +85,7 @@
       },
       "bullets": [
         "Supported large-scale API gateway operations handling high-volume enterprise traffic.",
-        "Built automation tools using Golang to eliminate repetitive operational reporting, reducing manual effort and error rates.",
+        "Built automation tools using Golang to eliminate repetitive operational reporting, cutting manual effort by ~70% and reducing reporting errors.",
         "Designed fraud indicator alerts based on API request and response patterns from Apigee logs.",
         "Integrated monitoring data from ELK Stack into automated reporting pipelines delivered to Telegram and Google Spreadsheet."
       ]
